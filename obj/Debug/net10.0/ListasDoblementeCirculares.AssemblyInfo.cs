@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ListasDoblementeCirculares")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b3f46a4227c8b2fe2da21d91773105f40977317f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+35104c8f0e30ef39b56418ab76d61c49334880fe")]
 [assembly: System.Reflection.AssemblyProductAttribute("ListasDoblementeCirculares")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ListasDoblementeCirculares")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

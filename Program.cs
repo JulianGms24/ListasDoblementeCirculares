@@ -1,11 +1,10 @@
 ﻿using System;
 
-// Clase Nodo: representa un elemento de la lista
-public class Nodo
+class Nodo
 {
-    public int Dato;           // Valor que guarda el nodo
-    public Nodo Siguiente;     // Referencia al siguiente nodo
-    public Nodo Anterior;      // Referencia al nodo anterior
+    public int Dato;
+    public Nodo Siguiente;
+    public Nodo Anterior;
 
     public Nodo(int dato)
     {
@@ -15,21 +14,14 @@ public class Nodo
     }
 }
 
-// Clase ListaDobleCircular: representa toda la lista
-public class ListaDobleCircular
+class ListaDobleCircular
 {
-    private Nodo inicio;   // Nodo que marca el inicio de la lista
+    private Nodo inicio;
 
-    public ListaDobleCircular()
-    {
-        inicio = null;     // La lista comienza vacía
-    }
-
-    // Insertar al inicio de la lista
     public void InsertarInicio(int dato)
     {
-        Nodo nuevo = new Nodo(dato); // Creamos un nuevo nodo
-        if (inicio == null) // Si la lista está vacía
+        Nodo nuevo = new Nodo(dato);
+        if (inicio == null)
         {
             nuevo.Siguiente = nuevo;
             nuevo.Anterior = nuevo;
@@ -37,16 +29,15 @@ public class ListaDobleCircular
         }
         else
         {
-            Nodo ultimo = inicio.Anterior; // Último nodo (circular)
+            Nodo ultimo = inicio.Anterior;
             nuevo.Siguiente = inicio;
             nuevo.Anterior = ultimo;
-            inicio.Anterior = nuevo;
             ultimo.Siguiente = nuevo;
-            inicio = nuevo; // Actualizamos el inicio
+            inicio.Anterior = nuevo;
+            inicio = nuevo;
         }
     }
 
-    // Insertar al final de la lista
     public void InsertarFinal(int dato)
     {
         Nodo nuevo = new Nodo(dato);
@@ -63,27 +54,19 @@ public class ListaDobleCircular
             nuevo.Anterior = ultimo;
             ultimo.Siguiente = nuevo;
             inicio.Anterior = nuevo;
-            // El inicio no cambia aquí
         }
     }
 
-    // Eliminar un nodo por su valor
-    public void Eliminar(int dato)
+    public bool Eliminar(int dato)
     {
-        if (inicio == null)
-        {
-            Console.WriteLine("Lista vacía.");
-            return;
-        }
+        if (inicio == null) return false;
 
         Nodo actual = inicio;
-
-        // Recorremos la lista hasta volver al inicio
         do
         {
             if (actual.Dato == dato)
             {
-                if (actual.Siguiente == actual) // Solo hay un nodo
+                if (actual.Siguiente == actual)
                 {
                     inicio = null;
                 }
@@ -91,89 +74,102 @@ public class ListaDobleCircular
                 {
                     actual.Anterior.Siguiente = actual.Siguiente;
                     actual.Siguiente.Anterior = actual.Anterior;
-
                     if (actual == inicio)
                         inicio = actual.Siguiente;
                 }
-
-                Console.WriteLine($"Nodo con valor {dato} eliminado.");
-                return;
+                return true;
             }
-
             actual = actual.Siguiente;
-
         } while (actual != inicio);
 
-        Console.WriteLine($"Valor {dato} no encontrado.");
+        return false;
     }
 
-    // Mostrar la lista hacia adelante
     public void MostrarAdelante()
     {
         if (inicio == null)
         {
-            Console.WriteLine("Lista vacía.");
+            Console.WriteLine("Lista vacía");
             return;
         }
 
         Nodo actual = inicio;
-        Console.Write("Lista hacia adelante: ");
         do
         {
-            Console.Write(actual.Dato + " ");
+            Console.Write($"{actual.Dato} ");
             actual = actual.Siguiente;
         } while (actual != inicio);
         Console.WriteLine();
     }
 
-    // Mostrar la lista hacia atrás
     public void MostrarAtras()
     {
         if (inicio == null)
         {
-            Console.WriteLine("Lista vacía.");
+            Console.WriteLine("Lista vacía");
             return;
         }
 
-        Nodo ultimo = inicio.Anterior;
-        Nodo actual = ultimo;
-        Console.Write("Lista hacia atrás: ");
+        Nodo actual = inicio.Anterior;
         do
         {
-            Console.Write(actual.Dato + " ");
+            Console.Write($"{actual.Dato} ");
             actual = actual.Anterior;
-        } while (actual != ultimo);
+        } while (actual != inicio.Anterior);
         Console.WriteLine();
     }
 }
 
-// Clase principal para probar todo
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
         ListaDobleCircular lista = new ListaDobleCircular();
+        int opcion;
 
-        Console.WriteLine("Insertando nodos...");
-        lista.InsertarFinal(10);
-        lista.InsertarFinal(20);
-        lista.InsertarInicio(5);
-        lista.InsertarFinal(30);
+        do
+        {
+            Console.WriteLine("\n--- Lista Doblemente Circular ---");
+            Console.WriteLine("1. Insertar al inicio");
+            Console.WriteLine("2. Insertar al final");
+            Console.WriteLine("3. Eliminar");
+            Console.WriteLine("4. Mostrar adelante");
+            Console.WriteLine("5. Mostrar atrás");
+            Console.WriteLine("0. Salir");
+            Console.Write("Seleccione una opción: ");
+            opcion = int.Parse(Console.ReadLine());
 
-        lista.MostrarAdelante(); // Esperado: 5 10 20 30
-        lista.MostrarAtras();    // Esperado: 30 20 10 5
+            switch (opcion)
+            {
+                case 1:
+                    Console.Write("Dato a insertar al inicio: ");
+                    lista.InsertarInicio(int.Parse(Console.ReadLine()));
+                    break;
+                case 2:
+                    Console.Write("Dato a insertar al final: ");
+                    lista.InsertarFinal(int.Parse(Console.ReadLine()));
+                    break;
+                case 3:
+                    Console.Write("Dato a eliminar: ");
+                    bool eliminado = lista.Eliminar(int.Parse(Console.ReadLine()));
+                    Console.WriteLine(eliminado ? "Eliminado." : "Dato no encontrado.");
+                    break;
+                case 4:
+                    Console.WriteLine("Lista hacia adelante:");
+                    lista.MostrarAdelante();
+                    break;
+                case 5:
+                    Console.WriteLine("Lista hacia atrás:");
+                    lista.MostrarAtras();
+                    break;
+                case 0:
+                    Console.WriteLine("Saliendo...");
+                    break;
+                default:
+                    Console.WriteLine("Opción inválida.");
+                    break;
+            }
 
-        Console.WriteLine("\nEliminando nodo 20...");
-        lista.Eliminar(20);
-
-        lista.MostrarAdelante(); // Esperado: 5 10 30
-
-        Console.WriteLine("\nEliminando nodo 5...");
-        lista.Eliminar(5);
-
-        lista.MostrarAdelante(); // Esperado: 10 30
-
-        Console.WriteLine("\nEliminando nodo 100 (no existe)...");
-        lista.Eliminar(100);     // Esperado: Valor 100 no encontrado
+        } while (opcion != 0);
     }
 }
